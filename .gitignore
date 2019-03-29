@@ -1,0 +1,14 @@
+# Exercism config
+.exercism/
+
+# Gradle config
+.gradle/
+
+# IntelliJ config
+.idea/
+
+# Build output
+build/
+
+# IntelliJ project files
+*.iml
