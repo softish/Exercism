@@ -4,6 +4,11 @@
 # Gradle config
 .gradle/
 
+# Gradlw wrapper
+gradle/
+gradlew
+gradlew.bat
+
 # IntelliJ config
 .idea/
 
