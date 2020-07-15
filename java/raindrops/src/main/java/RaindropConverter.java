@@ -23,11 +23,7 @@ class RaindropConverter {
             checkFactors(number, entry.getKey(), stringBuilder);
         }
 
-        if(stringBuilder.length() == 0) {
-            stringBuilder.append(number);
-        }
-
-        return stringBuilder.toString();
+        return stringBuilder.length() == 0 ? Integer.toString(number) : stringBuilder.toString();
     }
 
     private void checkFactors(int number, int factor, StringBuilder stringBuilder) {
