@@ -10,7 +10,7 @@ public class RnaTranscription {
 
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < dnaStrand.length(); i++) {
-            stringBuilder.append(mapping(dnaStrand.substring(i, i + 1)));
+            stringBuilder.append(mapDNAToRNA(dnaStrand.substring(i, i + 1).toUpperCase()));
         }
 
         return stringBuilder.toString();
@@ -22,10 +22,8 @@ public class RnaTranscription {
      * @param dnaStrand the DNA nucleotide
      * @return the RNA nucleotide
      */
-    private String mapping(String dnaStrand) {
+    private String mapDNAToRNA(String dnaStrand) {
         switch (dnaStrand) {
-            case "":
-                return "";
             case "C":
                 return "G";
             case "G":
