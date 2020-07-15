@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 class RaindropConverter {
 
@@ -18,9 +19,9 @@ class RaindropConverter {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        checkFactors(number, 3, stringBuilder);
-        checkFactors(number, 5, stringBuilder);
-        checkFactors(number, 7, stringBuilder);
+        for(Map.Entry<Integer, String> entry : raindropsMap.entrySet()) {
+            checkFactors(number, entry.getKey(), stringBuilder);
+        }
 
         if(stringBuilder.length() == 0) {
             stringBuilder.append(number);
