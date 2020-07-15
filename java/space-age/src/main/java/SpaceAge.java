@@ -1,18 +1,6 @@
 class SpaceAge {
 
-    private static final int ORBITAL_PERIOD = 31557600;
     private static double seconds;
-
-    private enum Planets {
-        MERCURY,
-        VENUS,
-        EARTH,
-        MARS,
-        JUPITER,
-        SATURN,
-        URANUS,
-        NEPTUNE
-    }
 
     SpaceAge(double seconds) {
         this.seconds = seconds;
@@ -23,73 +11,39 @@ class SpaceAge {
     }
 
     double onEarth() {
-        return ageConversion(Planets.EARTH);
+        return convertAge(new Earth());
     }
 
     double onMercury() {
-        return ageConversion(Planets.MERCURY);
+        return convertAge(new Mercury());
     }
 
     double onVenus() {
-        return ageConversion(Planets.VENUS);
+        return convertAge(new Venus());
     }
 
     double onMars() {
-        return ageConversion(Planets.MARS);
+        return convertAge(new Mars());
     }
 
     double onJupiter() {
-        return ageConversion(Planets.JUPITER);
+        return convertAge(new Jupiter());
     }
 
     double onSaturn() {
-        return ageConversion(Planets.SATURN);
+        return convertAge(new Saturn());
     }
 
     double onUranus() {
-        return ageConversion(Planets.URANUS);
+        return convertAge(new Uranus());
     }
 
     double onNeptune() {
-        return ageConversion(Planets.NEPTUNE);
+        return convertAge(new Neptune());
     }
 
-    private double ageConversion(Planets planet) {
-        double value;
-        switch (planet) {
-            case MERCURY:
-                value = performConversion(OrbitalRatio.MERCURY);
-                break;
-            case VENUS:
-                value = performConversion(OrbitalRatio.VENUS);
-                break;
-            case EARTH:
-                value = performConversion(OrbitalRatio.EARTH);
-                break;
-            case MARS:
-                value = performConversion(OrbitalRatio.MARS);
-                break;
-            case JUPITER:
-                value = performConversion(OrbitalRatio.JUPITER);
-                break;
-            case SATURN:
-                value = performConversion(OrbitalRatio.SATURN);
-                break;
-            case URANUS:
-                value = performConversion(OrbitalRatio.URANUS);
-                break;
-            case NEPTUNE:
-                value = performConversion(OrbitalRatio.NEPTUNE);
-                break;
-            default:
-                value = 0;
-        }
-
-        return value;
-    }
-
-    private double performConversion(double orbitalRatio) {
-        return seconds / (ORBITAL_PERIOD * orbitalRatio);
+    private double convertAge(Planet planet) {
+        return planet.calculate(seconds);
     }
 }
 
@@ -102,4 +56,76 @@ interface OrbitalRatio {
     double SATURN = 29.447498;
     double URANUS = 84.016846;
     double NEPTUNE = 164.79132;
+}
+
+class ConversionHelperEarth {
+    private static final int ORBITAL_PERIOD_EARTH = 31557600;
+
+    static double convert(double seconds, double orbitalRatio) {
+        return seconds / (ORBITAL_PERIOD_EARTH * orbitalRatio);
+    }
+}
+
+abstract class Planet {
+    public double calculate(double seconds) {
+        return ConversionHelperEarth.convert(seconds, getOrbitalRatio());
+    }
+
+    abstract double getOrbitalRatio();
+}
+
+class Mercury extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.MERCURY;
+    }
+}
+
+class Venus extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.VENUS;
+    }
+}
+
+class Earth extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.EARTH;
+    }
+}
+
+class Mars extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.MARS;
+    }
+}
+
+class Jupiter extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.JUPITER;
+    }
+}
+
+class Saturn extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.SATURN;
+    }
+}
+
+class Uranus extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.URANUS;
+    }
+}
+
+class Neptune extends Planet {
+    @Override
+    public double getOrbitalRatio() {
+        return OrbitalRatio.NEPTUNE;
+    }
 }
