@@ -1,6 +1,9 @@
+import java.util.Optional;
+
 public class Twofer {
     public String twofer(String name) {
-        if(name == null) {
+        Optional<String> nameOptional = Optional.ofNullable(name);
+        if(!nameOptional.isPresent()) {
             name = "you";
         }
 
