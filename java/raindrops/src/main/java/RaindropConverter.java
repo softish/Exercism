@@ -18,21 +18,21 @@ class RaindropConverter {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (number % 3 == 0) {
-            stringBuilder.append(raindropsMap.get(3));
-        }
-        if (number % 5 == 0) {
-            stringBuilder.append(raindropsMap.get(5));
-        }
-        if (number % 7 == 0) {
-            stringBuilder.append(raindropsMap.get(7));
-        }
+        checkFactors(number, 3, stringBuilder);
+        checkFactors(number, 5, stringBuilder);
+        checkFactors(number, 7, stringBuilder);
 
-        if (number % 3 != 0 && number % 5 != 0 && number % 7 != 0) {
+        if(stringBuilder.length() == 0) {
             stringBuilder.append(number);
         }
 
         return stringBuilder.toString();
+    }
+
+    private void checkFactors(int number, int factor, StringBuilder stringBuilder) {
+        if (number % factor == 0) {
+            stringBuilder.append(raindropsMap.get(factor));
+        }
     }
 
 }
