@@ -1,30 +1,23 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-class ArmstrongNumbers {
+public class ArmstrongNumbers {
 
-    boolean isArmstrongNumber(int numberToCheck) {
-        List<Double> powerDigits = new ArrayList<>();
-        int numberOfDigitsInNumber = getNumberOfDigitsInNumber(numberToCheck);
-        for (int i = 0; i < numberOfDigitsInNumber; i++) {
-            double raisedDigit = Math.pow(getDigitAtPosition(numberToCheck, i), numberOfDigitsInNumber);
-            powerDigits.add(raisedDigit);
-        }
-
-        return sumOfPowerDigits(powerDigits) == numberToCheck;
+    public boolean isArmstrongNumber(int numberToCheck) {
+        List<Integer> digits = extractDigitsFromNumber(numberToCheck);
+        return digits.stream()
+                .parallel()
+                .map(digit -> Math.pow(digit, digits.size()))
+                .mapToInt(Double::intValue)
+                .sum() == numberToCheck;
     }
 
-    private int getDigitAtPosition(int numberToCheck, int i) {
-        return Character.getNumericValue(String.valueOf(numberToCheck).charAt(i));
+    private List<Integer> extractDigitsFromNumber(int number) {
+        return String.valueOf(number)
+                .chars()
+                .mapToObj(i -> (char) i)
+                .map(Character::getNumericValue)
+                .collect(Collectors.toList());
     }
 
-    private int getNumberOfDigitsInNumber(int numberToCheck) {
-        return String.valueOf(numberToCheck).length();
-    }
-
-    private int sumOfPowerDigits(List<Double> digitsToSum) {
-        return (int) digitsToSum.stream()
-                .mapToDouble(Double::doubleValue)
-                .sum();
-    }
 }
