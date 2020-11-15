@@ -1,4 +1,6 @@
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Map.entry;
 
@@ -22,10 +24,10 @@ class ResistorColorDuo {
     }
 
     int value(String[] colors) {
-        StringBuilder resistanceValue = new StringBuilder();
-        for (int i = 0; i < Math.min(colors.length, MAX_LENGTH); i++) {
-            resistanceValue.append(colorCodes.get(colors[i]));
-        }
-        return Integer.parseInt(resistanceValue.toString());
+        return Integer.parseInt(Arrays.stream(colors)
+                .limit(MAX_LENGTH)
+                .map(colorCodes::get)
+                .map(String::valueOf)
+                .collect(Collectors.joining()));
     }
 }
