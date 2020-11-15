@@ -1,27 +1,31 @@
+import java.util.Map;
+
+import static java.util.Map.entry;
+
 class ResistorColorDuo {
+
+    private static final int MAX_LENGTH = 2;
+    private final Map<String, Integer> colorCodes;
+
+    public ResistorColorDuo() {
+        colorCodes = Map.ofEntries(
+                entry("black", 0),
+                entry("brown", 1),
+                entry("red", 2),
+                entry("orange", 3),
+                entry("yellow", 4),
+                entry("green", 5),
+                entry("blue", 6),
+                entry("violet", 7),
+                entry("grey", 8),
+                entry("white", 9));
+    }
 
     int value(String[] colors) {
         StringBuilder resistanceValue = new StringBuilder();
-        for (int i = 0; i < Math.min(colors.length, 2); i++) {
-            int colorCode = colorCode(colors[i]);
-            if (colorCode != Integer.MAX_VALUE) {
-                resistanceValue.append(colorCode);
-            }
+        for (int i = 0; i < Math.min(colors.length, MAX_LENGTH); i++) {
+            resistanceValue.append(colorCodes.get(colors[i]));
         }
         return Integer.parseInt(resistanceValue.toString());
-    }
-
-    int colorCode(String color) {
-        String[] colors = colors();
-        for (int i = 0; i < colors.length; i++) {
-            if (colors[i].equals(color)) {
-                return i;
-            }
-        }
-        return Integer.MIN_VALUE;
-    }
-
-    String[] colors() {
-        return new String[]{"black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"};
     }
 }
