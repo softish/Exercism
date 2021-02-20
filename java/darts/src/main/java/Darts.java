@@ -20,17 +20,18 @@ class Darts {
 }
 
 class Target {
-    private static final Circle inner = new Circle(1, 10);
-    private static final Circle middle = new Circle(5, 5);
-    private static final Circle outer = new Circle(10, 1);
-    private static final List<Circle> circles = List.of(inner, middle, outer);
-    private static final Circle outsideTarget = new Circle(11, 0);
+
+    private static final List<Circle> circles = List.of(
+            new Circle(1, 10),
+            new Circle(5, 5),
+            new Circle(10, 1)
+    );
 
     int getScore(Darts darts) {
         return circles.stream()
                 .filter(circle -> circle.withinCircle(darts.getPosition()))
                 .max(Comparator.comparing(Circle::getPoints))
-                .orElse(outsideTarget).getPoints();
+                .orElse(new Circle(11, 0)).getPoints();
     }
 }
 
