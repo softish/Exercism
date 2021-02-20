@@ -1,26 +1,21 @@
+import java.awt.geom.Point2D;
 import java.util.Comparator;
 import java.util.List;
 
 class Darts {
 
-    private final double x;
-    private final double y;
+    private final Point2D.Double position;
 
     Darts(double x, double y) {
-        this.x = x;
-        this.y = y;
+        position = new Point2D.Double(x, y);
     }
 
     int score() {
         return new Target().getScore(this);
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
+    Point2D.Double getPosition() {
+        return position;
     }
 }
 
@@ -33,7 +28,7 @@ class Target {
 
     int getScore(Darts darts) {
         return circles.stream()
-                .filter(circle -> circle.withinCircle(darts.getX(), darts.getY()))
+                .filter(circle -> circle.withinCircle(darts.getPosition()))
                 .max(Comparator.comparing(Circle::getPoints))
                 .orElse(outsideTarget).getPoints();
     }
@@ -41,30 +36,18 @@ class Target {
 
 class Circle {
 
-    private static final int ORIGIN = 0;
+    private final Point2D.Double circlePosition = new Point2D.Double(0, 0);
 
     private final int radius;
     private final int points;
 
-    public Circle(int radius, int points) {
+    Circle(int radius, int points) {
         this.radius = radius;
         this.points = points;
     }
 
-    boolean withinCircle(double x, double y) {
-        return distance(x, y) <= radius;
-    }
-
-    private double distance(double x, double y) {
-        return Math.sqrt(deltaX(x) + deltaY(y));
-    }
-
-    private double deltaY(double y) {
-        return Math.pow(ORIGIN - y, 2);
-    }
-
-    double deltaX(double x) {
-        return Math.pow(ORIGIN - x, 2);
+    boolean withinCircle(Point2D.Double dartPosition) {
+        return dartPosition.distance(circlePosition) <= radius;
     }
 
     int getPoints() {
