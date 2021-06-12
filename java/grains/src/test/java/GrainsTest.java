@@ -1,12 +1,10 @@
+import org.junit.Test;
+
+import java.math.BigInteger;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.math.BigInteger;
-import java.util.Map;
 
 public class GrainsTest {
 
@@ -91,16 +89,5 @@ public class GrainsTest {
     public void totalNumberOfGrainsOnABoard() {
         BigInteger total = grains.grainsOnBoard();
         assertEquals(new BigInteger("18446744073709551615"), total);
-    }
-
-    @Test
-    public void valueIsNotCalculated_whenPresentInCache() {
-        // given
-        var mapWithValue = Map.of(Grains.TOTAL, new BigInteger("18446744073709551615"));
-        var grains = Mockito.spy(new Grains(mapWithValue));
-        // when
-        grains.grainsOnBoard();
-        // then
-        Mockito.verify(grains, Mockito.times(0)).calculateTotal();
     }
 }
