@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.util.stream.IntStream;
 
 class Grains {
 
@@ -10,20 +11,13 @@ class Grains {
             throw new IllegalArgumentException("square must be between 1 and 64");
         }
 
-        BigInteger sum = BigInteger.ONE;
-        for (var i = 2; i <= square; i++) {
-            sum = sum.multiply(BigInteger.TWO);
-        }
-        return sum;
+        return BigInteger.TWO.pow(square - 1);
     }
 
     BigInteger grainsOnBoard() {
-        var sum = BigInteger.ZERO;
-
-        for (var i = 1; i <= LAST_SQUARE; i++) {
-            sum = sum.add(grainsOnSquare(i));
-        }
-
-        return sum;
+        return IntStream.range(FIRST_SQUARE, LAST_SQUARE + 1)
+                .mapToObj(this::grainsOnSquare)
+                .reduce(BigInteger::add)
+                .orElseThrow();
     }
 }
