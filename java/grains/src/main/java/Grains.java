@@ -1,5 +1,4 @@
 import java.math.BigInteger;
-import java.util.stream.IntStream;
 
 class Grains {
 
@@ -15,9 +14,8 @@ class Grains {
     }
 
     BigInteger grainsOnBoard() {
-        return IntStream.range(FIRST_SQUARE, LAST_SQUARE + 1)
-                .mapToObj(this::grainsOnSquare)
-                .reduce(BigInteger::add)
-                .orElseThrow();
+        return BigInteger.TWO
+                .pow(LAST_SQUARE)
+                .subtract(BigInteger.ONE);
     }
 }
