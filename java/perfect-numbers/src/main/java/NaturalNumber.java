@@ -13,9 +13,11 @@ class NaturalNumber {
     }
 
     public Classification getClassification() {
-        if (number == calculateAliquotSum()) {
+        int aliquotSum = calculateAliquotSum();
+
+        if (number == aliquotSum) {
             return Classification.PERFECT;
-        } else if (number < calculateAliquotSum()) {
+        } else if (number < aliquotSum) {
             return Classification.ABUNDANT;
         }
 
@@ -23,7 +25,10 @@ class NaturalNumber {
     }
 
     private int calculateAliquotSum() {
-        return IntStream.range(1, number)
+        // factors greater than half the number will always be decimal
+        // so we can omit them to reduce amount of calculations
+        return IntStream.rangeClosed(1, number / 2)
+                .parallel()
                 .filter(num -> number % num == 0)
                 .sum();
     }
