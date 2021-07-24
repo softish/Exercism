@@ -3,32 +3,41 @@ import java.util.regex.Pattern;
 
 class ProteinTranslator {
 
-    public static final String METHIONINE = "Methionine";
-    public static final String PHENYLALANINE = "Phenylalanine";
-    public static final String LEUCINE = "Leucine";
-    public static final String SERINE = "Serine";
-    public static final String TYROSINE = "Tyrosine";
-    public static final String CYSTEINE = "Cysteine";
-    public static final String TRYPTOPHAN = "Tryptophan";
+    private final Set<String> rnaStopSequences = Set.of("UAA", "UAG", "UGA");
+    private final HashMap<String, String> codonProteinMap = new HashMap<>();
 
-    Map<String, String> rnaProteinMap = Map.ofEntries(
-            new AbstractMap.SimpleEntry<>("AUG", METHIONINE),
-            new AbstractMap.SimpleEntry<>("UUU", PHENYLALANINE),
-            new AbstractMap.SimpleEntry<>("UUC", PHENYLALANINE),
-            new AbstractMap.SimpleEntry<>("UUA", LEUCINE),
-            new AbstractMap.SimpleEntry<>("UUG", LEUCINE),
-            new AbstractMap.SimpleEntry<>("UCU", SERINE),
-            new AbstractMap.SimpleEntry<>("UCC", SERINE),
-            new AbstractMap.SimpleEntry<>("UCA", SERINE),
-            new AbstractMap.SimpleEntry<>("UCG", SERINE),
-            new AbstractMap.SimpleEntry<>("UAU", TYROSINE),
-            new AbstractMap.SimpleEntry<>("UAC", TYROSINE),
-            new AbstractMap.SimpleEntry<>("UGU", CYSTEINE),
-            new AbstractMap.SimpleEntry<>("UGC", CYSTEINE),
-            new AbstractMap.SimpleEntry<>("UGG", TRYPTOPHAN)
-    );
+    // complete set of
+    // protines inspired by jbberinger's solution
+    public ProteinTranslator() {
+        multiPut("Methionine", "AUG");
+        multiPut("Phenylalanine", "UUU", "UUC");
+        multiPut("Leucine", "UUA", "UUG", "CUU", "CUC", "CUA", "CUG");
+        multiPut("Valine", "GUU", "GUC", "GUA", "GUG");
+        multiPut("Serine", "UCU", "UCC", "UCA", "UCG", "AGU", "AGC");
+        multiPut("Proline", "CCU", "CCC", "CCA", "CCG");
+        multiPut("Threonine", "ACU", "ACC", "ACA", "ACG");
+        multiPut("Histidine", "CAU", "CAC");
+        multiPut("Glutamine", "CAA", "CAG");
+        multiPut("Asparagine", "AAU", "AAC");
+        multiPut("Lysine", "AAA", "AAG");
+        multiPut("Aspartic Acid", "GAU", "GAC");
+        multiPut("Glutamic Acid", "GAA", "GAG");
+        multiPut("Tyrosine", "UAU", "UAC");
+        multiPut("Cysteine", "UGU", "UGC");
+        multiPut("Tryptophan", "UGG");
+        multiPut("Arginine", "CGU", "CGC", "CGA", "CGG", "AGA", "AGG");
+        multiPut("Glycine", "GGU", "GGC", "GGA", "GGG");
+        multiPut("Isoleucine", "AUU", "AUC", "AUA");
+    }
 
-    Set<String> rnaStopSequences = Set.of("UAA", "UAG", "UGA");
+    // from trevans1's solution
+    String multiPut(String value, String... keys) {
+        for (String key : keys) {
+            codonProteinMap.put(key, value);
+        }
+
+        return value;
+    }
 
     List<String> translate(String rnaSequence) {
         var pattern = Pattern.compile("([A-Z]){3}");
@@ -40,7 +49,7 @@ class ProteinTranslator {
             if (rnaStopSequences.contains(codon)) {
                 break;
             }
-            proteins.add(rnaProteinMap.get(codon));
+            proteins.add(codonProteinMap.get(codon));
         }
 
         return proteins;
