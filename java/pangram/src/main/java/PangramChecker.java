@@ -1,16 +1,16 @@
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PangramChecker {
 
-    private static final int ASCII_FIRST_LETTER = 97;
+    private static final int ASCII_FIRST_LOWERCASE_LETTER = 97;
     private static final int LETTERS_IN_ENGLISH_ALPHABET = 26;
 
-    private final List<String> alphabet;
+    private List<String> alphabet;
 
     public PangramChecker() {
-        alphabet = new ArrayList<>();
-        prepare();
+        generateAlphabet();
     }
 
     /**
@@ -20,20 +20,23 @@ public class PangramChecker {
      * @return true if it is a pangram
      */
     public boolean isPangram(String input) {
-        for (int i = 0; i < input.length(); i++) {
-            String letter = input.substring(i, i + 1).toLowerCase();
-            alphabet.remove(letter);
-        }
+        var candidateLetters = input.chars()
+                .mapToObj(letter -> Character.toString((char) letter))
+                .map(String::toLowerCase)
+                .distinct()
+                .collect(Collectors.toList());
 
-        return alphabet.isEmpty();
+        return alphabet.stream()
+                .allMatch(letter -> candidateLetters.stream()
+                        .anyMatch(candidate -> candidate.equals(letter)));
     }
 
     /**
      * Generates the alphabet data structure which keeps track of used letters.
      */
-    private void prepare() {
-        for (int i = 0; i < LETTERS_IN_ENGLISH_ALPHABET; i++) {
-            alphabet.add(Character.toString((char) (ASCII_FIRST_LETTER + i)));
-        }
+    private void generateAlphabet() {
+        alphabet = IntStream.range(ASCII_FIRST_LOWERCASE_LETTER, ASCII_FIRST_LOWERCASE_LETTER + LETTERS_IN_ENGLISH_ALPHABET)
+                .mapToObj(letter -> Character.toString((char) letter))
+                .collect(Collectors.toList());
     }
 }
